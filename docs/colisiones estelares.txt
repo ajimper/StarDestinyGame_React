@@ -1,0 +1,194 @@
+
+# ============================================================
+# 4. TABLA DE COLISIONES ESTELARES
+# ============================================================
+
+# Tipos de objetos estelares en el juego
+object_types = [
+    "MS-Baja",      # Secuencia Principal baja masa (0.1-0.5 M☉)
+    "MS-Solar",     # Secuencia Principal tipo solar (0.5-2 M☉)
+    "MS-Inter",     # Secuencia Principal intermedia (2-8 M☉)
+    "MS-Alta",      # Secuencia Principal alta masa (8-25 M☉)
+    "MS-MuyAlta",   # Secuencia Principal muy alta masa (>25 M☉)
+    "GiganteRoja",  # Gigante Roja / Supergigante
+    "AGB",          # Asymptotic Giant Branch
+    "WD-Helio",     # Enana Blanca de Helio
+    "WD-CO",        # Enana Blanca Carbono-Oxígeno
+    "WD-ONe",       # Enana Blanca Oxígeno-Neón
+    "NS",           # Estrella de Neutrones
+    "BH",           # Agujero Negro
+    "WR",           # Wolf-Rayet
+]
+
+# Crear matriz de colisiones
+# Formato: (objeto_resultante, fase_destino, evento_especial)
+# Las colisiones siguen principios astrofísicos:
+# - Masas se suman
+# - Si supera Chandrasekhar (1.4 M☉) desde WD → Supernova Ia
+# - Si supera TOV (~2-3 M☉) desde NS → BH
+# - Estrella+Estrella = Estrella más masiva (merge)
+# - Estrella+WD/NS = Acreción o Thorne-Żytkow
+
+collision_matrix = {
+    # (tipo1, tipo2): (resultado, descripcion, puntos_metalicidad, casillas_avance)
+    
+    # COLISIONES MS + MS (Merger de estrellas main sequence)
+    ("MS-Baja", "MS-Baja"): ("MS-Solar", "Fusión: dos enanas rojas forman estrella tipo solar", 2, 0),
+    ("MS-Solar", "MS-Baja"): ("MS-Solar", "Fusión: aumento de masa", 1, 0),
+    ("MS-Solar", "MS-Solar"): ("MS-Inter", "Fusión: formación de estrella de masa intermedia", 3, 0),
+    ("MS-Inter", "MS-Solar"): ("MS-Inter", "Fusión: estrella más masiva", 2, 0),
+    ("MS-Inter", "MS-Inter"): ("MS-Alta", "Fusión: formación de estrella masiva", 5, 0),
+    ("MS-Alta", "MS-Inter"): ("MS-Alta", "Fusión: supergigante en formación", 4, 0),
+    ("MS-Alta", "MS-Alta"): ("MS-MuyAlta", "Fusión: estrella muy masiva", 8, 0),
+    ("MS-MuyAlta", "MS-Alta"): ("MS-MuyAlta", "Fusión: hipergigante", 6, 0),
+    ("MS-MuyAlta", "MS-MuyAlta"): ("BH", "Colapso directo a agujero negro por exceso de masa", 15, 0),
+    
+    # COLISIONES con Gigantes Rojas
+    ("MS-Baja", "GiganteRoja"): ("GiganteRoja", "Acreción de envoltura", 3, 0),
+    ("MS-Solar", "GiganteRoja"): ("AGB", "Acreción intensa: formación AGB", 4, 0),
+    ("GiganteRoja", "GiganteRoja"): ("AGB", "Fusión de gigantes: fase AGB", 6, 0),
+    
+    # COLISIONES con AGB
+    ("MS-Solar", "AGB"): ("WD-CO", "Terminación rápida: eyección de envoltura, enana blanca", 8, 0),
+    ("GiganteRoja", "AGB"): ("WD-CO", "Colisión terminal: nebulosa planetaria + enana blanca", 10, 0),
+    ("AGB", "AGB"): ("WD-CO", "Doble AGB: enana blanca masiva", 12, 0),
+    
+    # COLISIONES con Enanas Blancas
+    ("MS-Baja", "WD-Helio"): ("WD-CO", "Acreción: enana blanca más masiva", 5, 0),
+    ("MS-Baja", "WD-CO"): ("WD-CO", "Acreción mínima", 3, 0),
+    ("MS-Solar", "WD-CO"): ("Supernova_Ia", "SUPERNOVA TIPO Ia: límite Chandrasekhar superado", 20, 0),
+    ("MS-Inter", "WD-CO"): ("Supernova_Ia", "SUPERNOVA TIPO Ia brillante", 25, 0),
+    ("MS-Alta", "WD-CO"): ("NS", "Acreción destructiva: colapso a estrella de neutrones", 30, 0),
+    ("WD-CO", "WD-CO"): ("Supernova_Ia", "SUPERNOVA TIPO Ia por fusión de enanas blancas", 50, 0),
+    ("WD-Helio", "WD-CO"): ("Supernova_Ia", "SUPERNOVA TIPO Ia (sub-Chandrasekhar)", 35, 0),
+    ("WD-ONe", "WD-CO"): ("Supernova_Ia", "SUPERNOVA TIPO Ia rica en oxígeno-neón", 40, 0),
+    
+    # COLISIONES con Enanas Blancas de ONe
+    ("MS-Solar", "WD-ONe"): ("NS", "Colapso del electrón: estrella de neutrones", 18, 0),
+    ("WD-CO", "WD-ONe"): ("NS", "Fusión degenerada: estrella de neutrones", 25, 0),
+    ("WD-ONe", "WD-ONe"): ("NS", "Doble ONe: estrella de neutrones masiva", 30, 0),
+    
+    # COLISIONES con Estrellas de Neutrones
+    ("MS-Solar", "NS"): ("ThorneZytkow", "OBJETO THORNE-ŻYTKOW: NS dentro de gigante", 50, 0),
+    ("MS-Inter", "NS"): ("ThorneZytkow", "Thorne-Żytkow masivo", 60, 0),
+    ("GiganteRoja", "NS"): ("ThorneZytkow", "Clásico Thorne-Żytkow", 55, 0),
+    ("WD-CO", "NS"): ("Supernova_Iax", "Supernova Tipo Iax (transitorio raro)", 45, 0),
+    ("WD-ONe", "NS"): ("NS", "Fusión: NS más masiva o BH", 35, 0),
+    ("NS", "NS"): ("Kilonova_BH", "KILONOVA: Formación de agujero negro + ondas gravitacionales", 100, 0),
+    ("MS-Alta", "NS"): ("BH", "Colapso: agujero negro por exceso de masa", 80, 0),
+    
+    # COLISIONES con Agujeros Negros
+    ("MS-Baja", "BH"): ("BH", "Disrupción de marea: acreción", 10, 0),
+    ("MS-Solar", "BH"): ("BH", "Disrupción de marea", 15, 0),
+    ("WD-CO", "BH"): ("BH", "Disrupción de enana blanca", 25, 0),
+    ("WD-ONe", "BH"): ("BH", "Disrupción con flash de carbono", 30, 0),
+    ("NS", "BH"): ("BH", "Fusión NS-BH: agujero negro más masivo + GW", 120, 0),
+    ("BH", "BH"): ("BH", "Fusión de agujeros negros: agujero negro supermasivo + GW", 200, 0),
+    
+    # COLISIONES con Wolf-Rayet
+    ("MS-Solar", "WR"): ("Supernova_Ib", "Supernova Tipo Ib: WR + MS", 60, 0),
+    ("MS-Inter", "WR"): ("Supernova_Ib", "Supernova Ib masiva", 70, 0),
+    ("WD-CO", "WR"): ("NS", "Colapso inducido: estrella de neutrones", 50, 0),
+    ("NS", "WR"): ("BH", "Formación de agujero negro", 90, 0),
+}
+
+# Simetría de colisiones
+symmetric_matrix = {}
+for (a, b), result in collision_matrix.items():
+    symmetric_matrix[(a, b)] = result
+    if a != b:
+        symmetric_matrix[(b, a)] = result
+
+print("=" * 80)
+print("4. TABLA DE COLISIONES ESTELARES")
+print("=" * 80)
+print(f"\nTotal de combinaciones únicas definidas: {len(symmetric_matrix)}")
+print()
+
+# Mostrar tabla resumen
+print("-" * 100)
+print(f"{'Objeto A':<15} {'Objeto B':<15} {'Resultado':<25} {'Descripción':<45}")
+print("-" * 100)
+for (a, b), (result, desc, pts, _) in sorted(symmetric_matrix.items())[:30]:
+    print(f"{a:<15} {b:<15} {result:<25} {desc:<45}")
+print("...")
+print(f"\nTotal: {len(symmetric_matrix)} combinaciones")
+print()
+
+# Estadísticas de resultados
+from collections import Counter
+result_counts = Counter([r[0] for r in symmetric_matrix.values()])
+print("=" * 80)
+print("DISTRIBUCIÓN DE RESULTADOS DE COLISIONES:")
+print("=" * 80)
+for result, count in result_counts.most_common():
+    print(f"  {result:<25}: {count} colisiones")
+
+
+
+
+================================================================================
+4. TABLA DE COLISIONES ESTELARES
+================================================================================
+
+Total de combinaciones únicas definidas: 73
+
+----------------------------------------------------------------------------------------------------
+Objeto A        Objeto B        Resultado                 Descripción                                  
+----------------------------------------------------------------------------------------------------
+AGB             AGB             WD-CO                     Doble AGB: enana blanca masiva               
+AGB             GiganteRoja     WD-CO                     Colisión terminal: nebulosa planetaria + enana blanca
+AGB             MS-Solar        WD-CO                     Terminación rápida: eyección de envoltura, enana blanca
+BH              BH              BH                        Fusión de agujeros negros: agujero negro supermasivo + GW
+BH              MS-Baja         BH                        Disrupción de marea: acreción                
+BH              MS-Solar        BH                        Disrupción de marea                          
+BH              NS              BH                        Fusión NS-BH: agujero negro más masivo + GW  
+BH              WD-CO           BH                        Disrupción de enana blanca                   
+BH              WD-ONe          BH                        Disrupción con flash de carbono              
+GiganteRoja     AGB             WD-CO                     Colisión terminal: nebulosa planetaria + enana blanca
+GiganteRoja     GiganteRoja     AGB                       Fusión de gigantes: fase AGB                 
+GiganteRoja     MS-Baja         GiganteRoja               Acreción de envoltura                        
+GiganteRoja     MS-Solar        AGB                       Acreción intensa: formación AGB              
+GiganteRoja     NS              ThorneZytkow              Clásico Thorne-Żytkow                        
+MS-Alta         MS-Alta         MS-MuyAlta                Fusión: estrella muy masiva                  
+MS-Alta         MS-Inter        MS-Alta                   Fusión: supergigante en formación            
+MS-Alta         MS-MuyAlta      MS-MuyAlta                Fusión: hipergigante                         
+MS-Alta         NS              BH                        Colapso: agujero negro por exceso de masa    
+MS-Alta         WD-CO           NS                        Acreción destructiva: colapso a estrella de neutrones
+MS-Baja         BH              BH                        Disrupción de marea: acreción                
+MS-Baja         GiganteRoja     GiganteRoja               Acreción de envoltura                        
+MS-Baja         MS-Baja         MS-Solar                  Fusión: dos enanas rojas forman estrella tipo solar
+MS-Baja         MS-Solar        MS-Solar                  Fusión: aumento de masa                      
+MS-Baja         WD-CO           WD-CO                     Acreción mínima                              
+MS-Baja         WD-Helio        WD-CO                     Acreción: enana blanca más masiva            
+MS-Inter        MS-Alta         MS-Alta                   Fusión: supergigante en formación            
+MS-Inter        MS-Inter        MS-Alta                   Fusión: formación de estrella masiva         
+MS-Inter        MS-Solar        MS-Inter                  Fusión: estrella más masiva                  
+MS-Inter        NS              ThorneZytkow              Thorne-Żytkow masivo                         
+MS-Inter        WD-CO           Supernova_Ia              SUPERNOVA TIPO Ia brillante                  
+...
+
+Total: 73 combinaciones
+
+================================================================================
+DISTRIBUCIÓN DE RESULTADOS DE COLISIONES:
+================================================================================
+  BH                       : 16 colisiones
+  NS                       : 11 colisiones
+  WD-CO                    : 9 colisiones
+  Supernova_Ia             : 7 colisiones
+  ThorneZytkow             : 6 colisiones
+  Supernova_Ib             : 4 colisiones
+  MS-Solar                 : 3 colisiones
+  MS-Inter                 : 3 colisiones
+  MS-Alta                  : 3 colisiones
+  MS-MuyAlta               : 3 colisiones
+  AGB                      : 3 colisiones
+  GiganteRoja              : 2 colisiones
+  Supernova_Iax            : 2 colisiones
+  Kilonova_BH              : 1 colisiones
+  
+  
+  
+  
+  

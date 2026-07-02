@@ -1,0 +1,359 @@
+# Fases de la evolución estelar 
+
+## Diagrama Mermaid 
+
+'''mermaid
+graph TB
+    subgraph "NEBULOSA GUARDERIA"
+        N[Nebulosa Molecular<br/>Metalicidad: variable]
+    end
+
+    subgraph "FASES COMUNES"
+        P0[Protostar Clase 0<br/>~10^4 yr]
+        P1[Protostar Clase I<br/>~10^5 yr]
+        TT[T Tauri / Herbig<br/>~10^6-10^7 yr]
+        ZAMS[ZAMS<br/>Metalicidad: 0]
+    end
+
+    subgraph "SENDA 2: 0.1 M☉ [22 casillas]"
+        S2_1[MS: Enana Roja<br/>~10^10-10^13 yr]
+        S2_2[Enana Roja Evolucionada]
+        S2_3[Helio Degenerado]
+        S2_4[Enana Blanca Helio]
+        S2_5[Enana Negra<br/>FINAL]
+    end
+
+    subgraph "SENDA 3: 0.3 M☉ [19 casillas]"
+        S3_1[MS: Enana Roja<br/>~10^9-10^11 yr]
+        S3_2[Subgigante]
+        S3_3[Rama Gigantes Rojas]
+        S3_4[Helio Flash]
+        S3_5[Enana Blanca CO]
+        S3_6[Enana Negra<br/>FINAL]
+    end
+
+    subgraph "SENDA 4: 0.5 M☉ [18 casillas]"
+        S4_1[MS: M2 Enana Roja<br/>~5×10^10 yr]
+        S4_2[Subgigante]
+        S4_3[Rama Gigantes Rojas]
+        S4_4[Helio Flash]
+        S4_5[Rama Horizontal]
+        S4_6[AGB Temprana]
+        S4_7[Nebulosa Planetaria]
+        S4_8[Enana Blanca CO]
+        S4_9[Enana Negra<br/>FINAL]
+    end
+
+    subgraph "SENDA 5: 0.8 M☉ [17 casillas]"
+        S5_1[MS: K5 Enana Naranja<br/>~1.7×10^10 yr]
+        S5_2[Subgigante]
+        S5_3[Rama Gigantes Rojas]
+        S5_4[Helio Flash]
+        S5_5[Rama Horizontal]
+        S5_6[AGB]
+        S5_7[Nebulosa Planetaria]
+        S5_8[Enana Blanca CO]
+        S5_9[Enana Negra<br/>FINAL]
+    end
+
+    subgraph "SENDA 6: 1.0 M☉ [16 casillas]"
+        S6_1[MS: Sol G2V<br/>~1.0×10^10 yr]
+        S6_2[Subgigante]
+        S6_3[Rama Gigantes Rojas]
+        S6_4[Helio Flash]
+        S6_5[Rama Horizontal]
+        S6_6[AGB Termopulso]
+        S6_7[Nebulosa Planetaria]
+        S6_8[Enana Blanca CO]
+        S6_9[Enana Negra<br/>FINAL]
+    end
+
+    subgraph "SENDA 7: 1.5 M☉ [15 casillas]"
+        S7_1[MS: F5V<br/>~3.6×10^9 yr]
+        S7_2[Subgigante]
+        S7_3[Gigante Roja]
+        S7_4[Helio Core Burning]
+        S7_5[Gigante Brillante]
+        S7_6[Supergigante Roja]
+        S7_7[C-burning]
+        S7_8[Nebulosa Planetaria]
+        S7_9[Enana Blanca CO/ONe]
+        S7_10[Enana Negra<br/>FINAL]
+    end
+
+    subgraph "SENDA 8: 2.0 M☉ [14 casillas]"
+        S8_1[MS: A5V<br/>~1.8×10^9 yr]
+        S8_2[Subgigante]
+        S8_3[Gigante Roja]
+        S8_4[Helio Core Burning]
+        S8_5[Gigante Brillante]
+        S8_6[Supergigante Roja]
+        S8_7[C-burning]
+        S8_8[AGB Super]
+        S8_9[Nebulosa Planetaria]
+        S8_10[Enana Blanca ONe]
+        S8_11[Enana Negra<br/>FINAL]
+    end
+
+    subgraph "SENDA 9: 3.0 M☉ [13 casillas]"
+        S9_1[MS: A0V<br/>~6.4×10^8 yr]
+        S9_2[Subgigante]
+        S9_3[Gigante Roja]
+        S9_4[Helio Core Burning]
+        S9_5[Blue Loop]
+        S9_6[C-burning]
+        S9_7[Ne-burning]
+        S9_8[Supernova Core-Collapse]
+        S9_9[NS / BH<br/>FINAL]
+    end
+
+    subgraph "SENDA 10: 5.0 M☉ [12 casillas]"
+        S10_1[MS: B5V<br/>~1.8×10^8 yr]
+        S10_2[Supergigante Roja]
+        S10_3[Blue Loop]
+        S10_4[C-burning]
+        S10_5[Ne-burning]
+        S10_6[O-burning]
+        S10_7[Si-burning]
+        S10_8[Supernova Core-Collapse]
+        S10_9[NS / BH<br/>FINAL]
+    end
+
+    subgraph "SENDA 11: 8.0 M☉ [10 casillas]"
+        S11_1[MS: B2V<br/>~5.5×10^7 yr]
+        S11_2[Supergigante Roja]
+        S11_3[Blue Loop]
+        S11_4[C-burning]
+        S11_5[Ne-burning]
+        S11_6[O-burning]
+        S11_7[Si-burning]
+        S11_8[Supernova Core-Collapse]
+        S11_9[NS<br/>FINAL]
+    end
+
+    subgraph "SENDA 12: 15 M☉ [9 casillas]"
+        S12_1[MS: O8V<br/>~1.1×10^7 yr]
+        S12_2[Supergigante Roja]
+        S12_3[Blue Loop]
+        S12_4[C-burning]
+        S12_5[O-burning]
+        S12_6[Si-burning]
+        S12_7[Supernova / Hypernova]
+        S12_8[NS / BH<br/>FINAL]
+    end
+
+    subgraph "SENDA 13*: 25 M☉ [8 casillas]"
+        S13_1[MS: O5V<br/>~3.2×10^6 yr]
+        S13_2[Wolf-Rayet WN]
+        S13_3[Wolf-Rayet WC]
+        S13_4[Wolf-Rayet WO]
+        S13_5[Supernova / Hypernova]
+        S13_6[BH Estelar<br/>FINAL]
+    end
+
+    N --> P0
+    P0 --> P1 --> TT --> ZAMS
+
+    ZAMS --> S2_1 --> S2_2 --> S2_3 --> S2_4 --> S2_5
+    ZAMS --> S3_1 --> S3_2 --> S3_3 --> S3_4 --> S3_5 --> S3_6
+    ZAMS --> S4_1 --> S4_2 --> S4_3 --> S4_4 --> S4_5 --> S4_6 --> S4_7 --> S4_8 --> S4_9
+    ZAMS --> S5_1 --> S5_2 --> S5_3 --> S5_4 --> S5_5 --> S5_6 --> S5_7 --> S5_8 --> S5_9
+    ZAMS --> S6_1 --> S6_2 --> S6_3 --> S6_4 --> S6_5 --> S6_6 --> S6_7 --> S6_8 --> S6_9
+    ZAMS --> S7_1 --> S7_2 --> S7_3 --> S7_4 --> S7_5 --> S7_6 --> S7_7 --> S7_8 --> S7_9 --> S7_10
+    ZAMS --> S8_1 --> S8_2 --> S8_3 --> S8_4 --> S8_5 --> S8_6 --> S8_7 --> S8_8 --> S8_9 --> S8_10 --> S8_11
+    ZAMS --> S9_1 --> S9_2 --> S9_3 --> S9_4 --> S9_5 --> S9_6 --> S9_7 --> S9_8 --> S9_9
+    ZAMS --> S10_1 --> S10_2 --> S10_3 --> S10_4 --> S10_5 --> S10_6 --> S10_7 --> S10_8 --> S10_9
+    ZAMS --> S11_1 --> S11_2 --> S11_3 --> S11_4 --> S11_5 --> S11_6 --> S11_7 --> S11_8 --> S11_9
+    ZAMS --> S12_1 --> S12_2 --> S12_3 --> S12_4 --> S12_5 --> S12_6 --> S12_7 --> S12_8
+    ZAMS --> S13_1 --> S13_2 --> S13_3 --> S13_4 --> S13_5 --> S13_6
+
+    style N fill:#1a1a2e,stroke:#e94560,stroke-width:3px,color:#fff
+    style ZAMS fill:#f9c74f,stroke:#f9844a,stroke-width:2px,color:#000
+    style S2_5 fill:#16213e,stroke:#0f3460,stroke-width:2px,color:#fff
+    style S4_9 fill:#16213e,stroke:#0f3460,stroke-width:2px,color:#fff
+    style S9_9 fill:#6c757d,stroke:#495057,stroke-width:2px,color:#fff
+    style S13_6 fill:#000,stroke:#e94560,stroke-width:3px,color:#fff
+    
+
+'''
+
+
+
+'''python
+
+# ============================================================
+# 3. DEFINIR FASES DE EVOLUCIÓN ESTELAR PARA CADA SENDA
+# ============================================================
+
+# Fases comunes a todas las estrellas
+common_phases = [
+    "Nebulosa Molecular",     # 0: Inicio
+    "Protostar Clase 0",      # 1: Colapso 
+    "Protostar Clase I",      # 2: Acumulación
+    "T Tauri / Herbig",       # 3: Pre-secuencia principal
+    "ZAMS",                   # 4: Zero-Age Main Sequence
+]
+
+# Fases post-secuencia principal según masa
+post_ms_low = [             # < 0.5 M☉ (Muy baja masa)
+    "MS - Enana Roja",       # 5: Secuencia principal larga
+    "Enana Roja Evolucionada", # 6
+    "Helio Degenerado",       # 7: No enciende He
+    "Enana Blanca Helio",     # 8
+    "Enana Negra",            # 9: Final
+]
+
+post_ms_low_mid = [         # 0.5 - 2 M☉ (Baja masa)
+    "MS - Secuencia Principal", # 5
+    "Subgigante",             # 6
+    "Rama Gigantes Rojas",    # 7
+    "Flash Helio",            # 8
+    "Rama Horizontal",        # 9
+    "AGB Temprana",           # 10
+    "AGB Termopulso",         # 11
+    "Nebulosa Planetaria",    # 12
+    "Enana Blanca CO",        # 13
+    "Enana Negra",            # 14: Final
+]
+
+post_ms_mid = [             # 2 - 8 M☉ (Masa intermedia)
+    "MS - Secuencia Principal", # 5
+    "Subgigante",             # 6
+    "Gigante Roja",           # 7
+    "Helio Core Burning",     # 8
+    "Gigante Brillante",      # 9
+    "Supergigante Roja",      # 10
+    "C-burning",              # 11
+    "AGB Super",              # 12
+    "Nebulosa Planetaria",    # 13
+    "Enana Blanca CO/ONe",    # 14
+    "Enana Negra",            # 15: Final
+]
+
+post_ms_high = [            # 8 - 25 M☉ (Alta masa)
+    "MS - Secuencia Principal O/B",  # 5
+    "Supergigante Roja",      # 6
+    "Blue Loop",              # 7
+    "C-burning",              # 8
+    "Ne-burning",             # 9
+    "O-burning",              # 10
+    "Si-burning",             # 11
+    "Supernova Core-Collapse", # 12
+    "Remanente Compacto",     # 13: NS o BH
+]
+
+post_ms_very_high = [       # > 25 M☉ (Muy alta masa)
+    "MS - Estrella O Masiva", # 5
+    "Estrella Wolf-Rayet",    # 6: Pérdida de envoltura
+    "WR - Fase WN",           # 7: N dominante
+    "WR - Fase WC",           # 8: C dominante  
+    "WR - Fase WO",           # 9: O dominante
+    "Supernova / Hypernova",  # 10
+    "NS / BH de masa intermedia", # 11
+    "Agujero Negro",          # 12: Final
+]
+
+print("=" * 80)
+print("3. FASES DE EVOLUCIÓN ESTELAR POR RANGO DE MASA")
+print("=" * 80)
+print()
+print("FASES COMUNES (Todas las Sendas):")
+for i, phase in enumerate(common_phases):
+    print(f"  [{i}] {phase}")
+print()
+
+print("POST-MS: Muy Baja Masa (< 0.5 M☉):")
+for i, phase in enumerate(post_ms_low, 5):
+    print(f"  [{i}] {phase}")
+print()
+
+print("POST-MS: Baja Masa (0.5 - 2 M☉):")
+for i, phase in enumerate(post_ms_low_mid, 5):
+    print(f"  [{i}] {phase}")
+print()
+
+print("POST-MS: Masa Intermedia (2 - 8 M☉):")
+for i, phase in enumerate(post_ms_mid, 5):
+    print(f"  [{i}] {phase}")
+print()
+
+print("POST-MS: Alta Masa (8 - 25 M☉):")
+for i, phase in enumerate(post_ms_high, 5):
+    print(f"  [{i}] {phase}")
+print()
+
+print("POST-MS: Muy Alta Masa (> 25 M☉):")
+for i, phase in enumerate(post_ms_very_high, 5):
+    print(f"  [{i}] {phase}")
+    
+    
+'''
+
+## Salida
+    
+    ================================================================================
+3. FASES DE EVOLUCIÓN ESTELAR POR RANGO DE MASA
+================================================================================
+
+FASES COMUNES (Todas las Sendas):
+  [0] Nebulosa Molecular
+  [1] Protostar Clase 0
+  [2] Protostar Clase I
+  [3] T Tauri / Herbig
+  [4] ZAMS
+
+POST-MS: Muy Baja Masa (< 0.5 M☉):
+  [5] MS - Enana Roja
+  [6] Enana Roja Evolucionada
+  [7] Helio Degenerado
+  [8] Enana Blanca Helio
+  [9] Enana Negra
+
+POST-MS: Baja Masa (0.5 - 2 M☉):
+  [5] MS - Secuencia Principal
+  [6] Subgigante
+  [7] Rama Gigantes Rojas
+  [8] Flash Helio
+  [9] Rama Horizontal
+  [10] AGB Temprana
+  [11] AGB Termopulso
+  [12] Nebulosa Planetaria
+  [13] Enana Blanca CO
+  [14] Enana Negra
+
+POST-MS: Masa Intermedia (2 - 8 M☉):
+  [5] MS - Secuencia Principal
+  [6] Subgigante
+  [7] Gigante Roja
+  [8] Helio Core Burning
+  [9] Gigante Brillante
+  [10] Supergigante Roja
+  [11] C-burning
+  [12] AGB Super
+  [13] Nebulosa Planetaria
+  [14] Enana Blanca CO/ONe
+  [15] Enana Negra
+
+POST-MS: Alta Masa (8 - 25 M☉):
+  [5] MS - Secuencia Principal O/B
+  [6] Supergigante Roja
+  [7] Blue Loop
+  [8] C-burning
+  [9] Ne-burning
+  [10] O-burning
+  [11] Si-burning
+  [12] Supernova Core-Collapse
+  [13] Remanente Compacto
+
+POST-MS: Muy Alta Masa (> 25 M☉):
+  [5] MS - Estrella O Masiva
+  [6] Estrella Wolf-Rayet
+  [7] WR - Fase WN
+  [8] WR - Fase WC
+  [9] WR - Fase WO
+  [10] Supernova / Hypernova
+  [11] NS / BH de masa intermedia
+  [12] Agujero Negro
+  
+  
+  
